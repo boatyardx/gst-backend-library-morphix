@@ -453,20 +453,31 @@
 		</plugins>
 	</reporting>
 
+	<repositories>
+		<repository>
+			<id>azure-maven-repo-snapshot</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/snapshot</url>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>azure-maven-repo-release</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/release</url>
+			<releases>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+		</repository>
+	</repositories>
 	<distributionManagement>
 		<snapshotRepository>
-			<id>central</id>
-			<name>Central Repository Snapshots</name>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+			<id>azure-maven-repo-snapshot</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/snapshot</url>
 		</snapshotRepository>
 		<repository>
-			<id>central</id>
-			<name>Central Repository</name>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>azure-maven-repo-release</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/release</url>
 		</repository>
 	</distributionManagement>
-
-	<repositories>
-	</repositories>
 
 </project>
