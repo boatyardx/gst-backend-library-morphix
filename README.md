@@ -75,12 +75,14 @@ cd morphix
 mvn clean install
 ```
 
-Maven: add this dependency to your `pom.xml`
+Maven (internal fork): add this dependency to your `pom.xml`
 
 ```xml
 <dependency>
-    <groupId>io.github.raduking</groupId>
+    <groupId>com.boatyardx.morphix</groupId>
     <artifactId>morphix-all</artifactId>
     <version>1.0.47</version>
 </dependency>
 ```
+
+The upstream open-source project publishes under `io.github.raduking` on Maven Central (badges above). This repository uses `com.boatyardx.morphix` for releases on the company Maven repository.
