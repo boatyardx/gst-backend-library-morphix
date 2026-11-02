@@ -68,7 +68,7 @@ pipeline {
 //     }
 
     stage('Determine version') {
-      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH || env.BRANCH_NAME == env.SNAPSHOT_BRANCH } }
+      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH } }
 
       steps {
         withCredentials([file(credentialsId: 'maven-credentials', variable: 'MVN_SETTINGS')]) {
@@ -78,8 +78,7 @@ pipeline {
             // see https://jenkins.io/doc/pipeline/steps/pipeline-utility-steps/#readmavenpom-read-a-maven-project-file)
             def projectVersion = sh script: 'mvn --settings $MVN_SETTINGS help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
             // Build version includes the date time formatter
-            BUILD_DATE_FORMATTED = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
-            env.RELEASE_VERSION = "${projectVersion}-${BUILD_DATE_FORMATTED}-${env.BUILD_TYPE}"
+            env.RELEASE_VERSION = "${projectVersion}"
             echo "Build version ${RELEASE_VERSION}"
           }
         }
@@ -87,16 +86,16 @@ pipeline {
     }
 
     stage('Install library') {
-      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH || env.BRANCH_NAME == env.SNAPSHOT_BRANCH } }
+      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH } }
 
       steps {
         withCredentials([file(credentialsId: 'maven-credentials', variable: 'MVN_SETTINGS')]) {
-            script {
-               MAVEN_DEPLOY_REPO = env.BUILD_TYPE == 'RELEASE' ? 'azure-maven-repo-release' : 'azure-maven-repo-snapshot'
-               sh 'mvn versions:set -DnewVersion=${RELEASE_VERSION}'
-               sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO"
-               appendToBuildDescription("${RELEASE_VERSION}")
-            }
+          script {
+            MAVEN_DEPLOY_REPO = 'azure-maven-repo-release'
+            sh 'mvn versions:set -DnewVersion=${RELEASE_VERSION}'
+            sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO"
+            appendToBuildDescription("${RELEASE_VERSION}")
+          }
         }
       }
     }
