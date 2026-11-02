@@ -6,7 +6,7 @@ pipeline {
     kubernetes {
       inheritFrom 'jenkins-pipeline'
       label 'jenkins-pipeline'
-      defaultContainer 'mvn-jdk21'
+      defaultContainer 'mvn-jdk25'
     }
   }
 
@@ -16,9 +16,8 @@ pipeline {
   }
 
   environment {
-    SNAPSHOT_BRANCH = 'develop'
     RELEASE_BRANCH = 'master'
-    BUILD_TYPE = "${env.BRANCH_NAME == 'master' ? 'RELEASE' : 'SNAPSHOT'}"
+    BUILD_TYPE = 'RELEASE'
   }
 
   stages {
