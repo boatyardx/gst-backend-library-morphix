@@ -93,7 +93,7 @@ pipeline {
           script {
             MAVEN_DEPLOY_REPO = 'azure-maven-repo-release'
             sh 'mvn versions:set -DnewVersion=${RELEASE_VERSION}'
-            sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO"
+            sh "mvn -ntp --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO"
             appendToBuildDescription("${RELEASE_VERSION}")
           }
         }
