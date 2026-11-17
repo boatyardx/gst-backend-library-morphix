@@ -52,7 +52,7 @@ A library that exposes general Java utility and reflection methods and a package
 
 ### Releases
 
-Current release `1.0.48`
+Current release `1.1.0`
 
 ### Documentation
 
@@ -81,7 +81,7 @@ Maven (internal fork): add this dependency to your `pom.xml`
 <dependency>
     <groupId>com.boatyardx.morphix</groupId>
     <artifactId>morphix-all</artifactId>
-    <version>1.0.48</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
