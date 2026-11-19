@@ -86,6 +86,8 @@ public interface Fields {
 	 * Returns a list with all the fields in the class given as parameter. This is different from
 	 * {@link Class#getDeclaredFields()} as it returns a {@link List} instead of an array. If the class is null it returns
 	 * an empty list.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param <T> type to get the fields from
 	 *
@@ -99,6 +101,8 @@ public interface Fields {
 	/**
 	 * Variation of {@link #getAllDeclared(Class)}. It will call the method with the class determined from the object
 	 * supplied as parameter.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param obj object on which the fields are needed
 	 * @return list of fields
@@ -109,6 +113,8 @@ public interface Fields {
 
 	/**
 	 * Returns a list with all the fields in the class, given as parameter and the field predicate.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param <T> type to get the fields from
 	 *
@@ -122,6 +128,8 @@ public interface Fields {
 
 	/**
 	 * Returns a list with all the fields in the class, given as parameter and the field predicate.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param obj object on which the fields are needed
 	 * @param predicate predicate for fields
@@ -135,6 +143,8 @@ public interface Fields {
 	 * Filters the given field list with the given predicate. This method could have been implemented with the stream API
 	 * but the benchmarking shows that with the stream API is 50% slower. These methods are implemented with performance
 	 * considerations first.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param fields the fields to filter
 	 * @param predicate predicate to filter with
@@ -164,6 +174,8 @@ public interface Fields {
 	/**
 	 * Returns a list with all the fields in the class, given as parameter and the field predicate, including the ones in
 	 * all it's super classes. The returned order of the fields are: class -> super class -> ... -> base class
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param <T> type to get the fields from
 	 *
@@ -178,6 +190,8 @@ public interface Fields {
 	/**
 	 * Variation of {@link #getAllDeclaredInHierarchy(Class)}. It will call the method with the class determined from the
 	 * object supplied as parameter.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param obj object on which the fields are needed
 	 * @return list of fields
@@ -189,6 +203,8 @@ public interface Fields {
 	/**
 	 * Variation of {@link #getAllDeclaredInHierarchy(Class, Predicate)}. It will call the method with the class determined
 	 * from the object supplied as parameter.
+	 * <p>
+	 * The returned list must not be modified by the caller.
 	 *
 	 * @param obj object on which the fields are needed
 	 * @param predicate predicate for fields
@@ -358,8 +374,11 @@ public interface Fields {
 		 */
 		static <T, U> T getStatic(final Class<U> cls, final String fieldName) {
 			Field field = Fields.getOneDeclaredInHierarchy(cls, fieldName);
-			if (null == field || JavaModifier.STATIC.isNotPresentOn(field)) {
-				throw new ReflectionException("Cannot get static field '{}' from class {}: field not found or not static", fieldName, cls);
+			if (null == field) {
+				throw new ReflectionException("Cannot get static field '{}' from class {}: field not found", fieldName, cls);
+			}
+			if (JavaModifier.STATIC.isNotPresentOn(field)) {
+				throw new ReflectionException("Cannot get static field '{}' from class {}: field is not static", fieldName, cls);
 			}
 			return Unchecked.get(null, field);
 		}
@@ -396,8 +415,11 @@ public interface Fields {
 		 */
 		static <T, U> void setStatic(final Class<T> cls, final String fieldName, final U value) {
 			Field field = Fields.getOneDeclaredInHierarchy(cls, fieldName);
-			if (null == field || JavaModifier.STATIC.isNotPresentOn(field)) {
-				throw new ReflectionException("Cannot set static field '{}' in class {}: field not found or not static", fieldName, cls);
+			if (null == field) {
+				throw new ReflectionException("Cannot set static field '{}' in class {}: field not found", fieldName, cls);
+			}
+			if (JavaModifier.STATIC.isNotPresentOn(field)) {
+				throw new ReflectionException("Cannot set static field '{}' in class {}: field is not static", fieldName, cls);
 			}
 			Unchecked.set(null, field, value);
 		}
@@ -544,6 +566,8 @@ public interface Fields {
 		 * Returns a list with all the fields in the class given as parameter. This is different from
 		 * {@link Class#getDeclaredFields()} as it returns a {@link List} instead of an array. If the class is null it returns
 		 * an empty list.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -560,6 +584,8 @@ public interface Fields {
 		/**
 		 * Variation of {@link #getAllDeclared(Class)}. It will call the method with the class determined from the object
 		 * supplied as parameter.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param obj object on which the fields are needed
 		 * @return list of fields
@@ -574,6 +600,8 @@ public interface Fields {
 
 		/**
 		 * Returns a list with all the fields in the class, given as parameter and the field predicate.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -590,6 +618,8 @@ public interface Fields {
 
 		/**
 		 * Returns a list with all the fields in the class, given as parameter and the field predicate.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param obj object on which the fields are needed
 		 * @param predicate predicate for fields
@@ -607,6 +637,8 @@ public interface Fields {
 		 * Filters the given field list with the given predicate. This method could have been implemented with the stream API
 		 * but the benchmarking shows that with the stream API is 50% slower. These methods are implemented with performance
 		 * considerations first.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param fields the fields to filter
 		 * @param predicate predicate to filter with
@@ -642,6 +674,8 @@ public interface Fields {
 		/**
 		 * Returns a list with all the fields in the class, given as parameter and the field predicate, including the ones in
 		 * all it's super classes. The returned order of the fields are: class -> super class -> ... -> base class
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -659,6 +693,8 @@ public interface Fields {
 		/**
 		 * Variation of {@link #getAllDeclaredInHierarchy(Class)}. It will call the method with the class determined from the
 		 * object supplied as parameter.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param obj object on which the fields are needed
 		 * @return list of fields
@@ -674,6 +710,8 @@ public interface Fields {
 		/**
 		 * Variation of {@link #getAllDeclaredInHierarchy(Class, Predicate)}. It will call the method with the class determined
 		 * from the object supplied as parameter.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param obj object on which the fields are needed
 		 * @param predicate predicate for fields
@@ -884,12 +922,17 @@ public interface Fields {
 	}
 
 	/**
-	 * Namespace interface for field operations that assume valid input.
+	 * Namespace for field operations that mirror {@link IgnoreAccess} but perform no validation.
 	 * <p>
-	 * Methods in this interface do not perform explicit parameter validation. The caller is responsible for providing valid
-	 * input and handling exceptions.
+	 * {@link IgnoreAccess} delegates its core work here: {@link #get(Object, Field)} and
+	 * {@link #set(Object, Field, Object)} apply the same rules (including ignoring Java access modifiers) as
+	 * {@link IgnoreAccess#get(Object, Field) IgnoreAccess.get} and {@link IgnoreAccess#set(Object, Field, Object)
+	 * IgnoreAccess.set}, without checking that the field descriptor is non-null, resolving a field by name, or verifying
+	 * that a field is static. Static fields use a {@code null} target object, as with {@link IgnoreAccess}.
 	 * <p>
-	 * These methods are also used internally by the other field utility methods to avoid redundant validation.
+	 * This interface also exposes unchecked field lookup and enumeration helpers used by {@link Safe} and
+	 * {@link IgnoreAccess} so validation is not applied twice. Callers must supply valid arguments and handle
+	 * {@link ReflectionException} and other runtime failures; prefer {@link IgnoreAccess} in application code.
 	 *
 	 * @author Radu Sebastian LAZIN
 	 */
@@ -950,6 +993,8 @@ public interface Fields {
 		 * <p>
 		 * This method wraps the array returned by {@link Class#getDeclaredFields()} in a {@link FastArrayList} without copying
 		 * the array again.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -964,6 +1009,8 @@ public interface Fields {
 		 * Returns a list with all the fields in the class, given as parameter and the field predicate.
 		 * <p>
 		 * The caller must validate the class and predicate before calling this method.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -987,6 +1034,8 @@ public interface Fields {
 		 * <p>
 		 * The caller must validate the class. This method throws {@link NullPointerException} if it is null. Use
 		 * {@link Fields#getAllDeclaredInHierarchy(Class)} if you want an empty list when the class is {@code null}.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -1020,6 +1069,8 @@ public interface Fields {
 		 * <p>
 		 * No {@code null} checks are performed on the parameters. The caller must validate the class and predicate and handle
 		 * exceptions.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param <T> type to get the fields from
 		 *
@@ -1049,6 +1100,8 @@ public interface Fields {
 		 * <p>
 		 * No {@code null} checks are performed on the parameters. The caller must validate the list and predicate and handle
 		 * exceptions.
+		 * <p>
+		 * The returned list must not be modified by the caller.
 		 *
 		 * @param fields the fields to filter
 		 * @param predicate predicate to filter with
