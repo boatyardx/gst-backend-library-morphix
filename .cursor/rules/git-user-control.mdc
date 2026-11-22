@@ -1,0 +1,16 @@
+---
+description: Maintainer owns all commits and pushes; agents prepare changes only
+alwaysApply: true
+---
+
+# Git — user control
+
+The maintainer is the only one who commits and pushes in this repository.
+
+Do **not** run `git commit`, create merge commits, `git push`, or destructive git history
+commands unless the user explicitly requests that exact operation in the current message.
+
+Allowed without an explicit commit/push request: `git fetch`, merge (may leave repo merging),
+conflict resolution, file edits, tests, `git add`, and reporting `git status` / `git diff` for review.
+
+After git-heavy work, do not commit — tell the user what to review before they commit or push.
