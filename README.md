@@ -52,13 +52,20 @@ A library that exposes general Java utility and reflection methods and a package
 
 ### Releases
 
-Current release `1.1.1`
+Current release `1.1.2`
 
 ### Documentation
 
 - [Enums](doc/enums.md)
 - [Simple conversions](doc/simple.md)
 - [Auto conversions](doc/auto-conversions.md)
+
+### Reflection and Security
+
+Field path lookup uses reflection and can read private and static fields. If a path comes from outside your application,
+validate it against an allowlist or resolve it against an object containing only data the caller may access.
+
+`Fields.Safe` handles `null`s and expected lookup failures. It does not restrict field access.
 
 ### Examples
 
@@ -81,7 +88,7 @@ Maven (internal fork): add this dependency to your `pom.xml`
 <dependency>
     <groupId>com.boatyardx.morphix</groupId>
     <artifactId>morphix-all</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
